@@ -16,6 +16,7 @@ class LocalBuddyTests {
         )
         runBlocking {
             val user = client.publicApi.signinUser(userCreds)
+            println(user.body())
             assertEquals(userCreds.username,user.body()?.username)
         }
     }

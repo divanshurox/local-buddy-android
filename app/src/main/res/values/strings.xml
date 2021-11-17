@@ -7,7 +7,25 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_signup">Signup</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <string name="login">Login</string>
+    <string name="signup">Sign up</string>
+
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="address">Address</string>
+
+    <string name="new_user_signup_text">new user? Signup</string>
+    <string name="pincode">Pincode</string>
+    <string name="gst_no">GST No.</string>
+    <string name="shopname">Shopname</string>
 </resources>

@@ -7,24 +7,24 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class SignupSellerRequest(
-    @Json(name = "address")
-    val address: Address,
-    @Json(name = "email")
-    val email: String,
     @Json(name = "firstname")
     val firstname: String,
-    @Json(name = "gstno")
-    val gstno: String,
-    @Json(name = "isSeller")
-    val isSeller: Boolean,
     @Json(name = "lastname")
     val lastname: String,
+    @Json(name = "email")
+    val email: String,
     @Json(name = "password")
     val password: String,
     @Json(name = "phone")
     val phone: String,
+    @Json(name = "address")
+    val address: Address,
+    @Json(name = "username")
+    val username: String,
+    @Json(name = "gstno")
+    val gstno: String,
     @Json(name = "shopname")
     val shopname: String,
-    @Json(name = "username")
-    val username: String
+    @Json(name = "isSeller")
+    val isSeller: Boolean,
 )
