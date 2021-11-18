@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.api.models.entity.Address
 import com.example.api.models.entity.User
 import com.example.localbuddy.data.AuthRepo
+import com.example.localbuddy.data.Resource
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
@@ -15,8 +16,8 @@ class AuthViewModel : ViewModel() {
         const val classTag: String = "AuthViewModel"
     }
 
-    private var _user = MutableLiveData<User?>()
-    val user: LiveData<User?> get() = _user
+    private var _user = MutableLiveData<Resource<User>>()
+    val user: LiveData<Resource<User>> get() = _user
 
     private var _error = MutableLiveData<String?>()
     val error: LiveData<String?> get() = _error
@@ -24,9 +25,8 @@ class AuthViewModel : ViewModel() {
     fun login(username: String, password: String) {
         viewModelScope.launch {
             try {
-                AuthRepo.login(username, password)?.let {
+                AuthRepo.login(username, password).let {
                     _user.value = it
-                    Log.d(classTag, "something")
                 }
             } catch (e: Exception) {
                 Log.d(classTag, "${e.message}")
@@ -55,10 +55,10 @@ class AuthViewModel : ViewModel() {
                     email,
                     password,
                     phone,
-                    Address(address, city, state, pincode),
+                    Address(address, city, pincode, state),
                     username,
                     isSeller
-                )?.let {
+                ).let {
                     _user.value = it
                 }
             } catch (e: Exception) {
@@ -83,6 +83,7 @@ class AuthViewModel : ViewModel() {
         shopname: String
     ) {
         viewModelScope.launch {
+            Log.d("AuthVieModel",gstno)
             try {
                 AuthRepo.registerSeller(
                     firstname,
@@ -90,12 +91,12 @@ class AuthViewModel : ViewModel() {
                     email,
                     password,
                     phone,
-                    Address(address, city, state, pincode),
+                    Address(address, city, pincode, state),
                     username,
                     gstno,
                     shopname,
                     isSeller
-                )?.let {
+                ).let {
                     _user.value = it
                 }
             } catch (e: Exception) {

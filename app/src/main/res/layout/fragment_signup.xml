@@ -261,7 +261,7 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
-                android:checked="true"
+                android:checked="false"
                 android:text="Are you a seller?"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -274,6 +274,7 @@
                 android:orientation="horizontal"
                 android:weightSum="100"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/seller_switch">
 

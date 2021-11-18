@@ -6,8 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.api.LocalBuddyClient
 import com.example.localbuddy.AuthViewModel
+import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentSignupBinding
+import com.example.localbuddy.handleApiCall
+import com.example.localbuddy.visible
 
 class SignupFragment: Fragment() {
     private var _binding: FragmentSignupBinding? = null
@@ -25,7 +29,18 @@ class SignupFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        authViewModel.user.observe(viewLifecycleOwner, {
+            when(it){
+                is Resource.Success -> {
+                    LocalBuddyClient.authToken = it.value.token
+                }
+                is Resource.Faliure -> handleApiCall(it)
+            }
+        })
         _binding?.apply{
+            sellerSwitch.setOnCheckedChangeListener { _, isChecked ->
+                gstShopnameLayout.visible(isChecked)
+            }
             signupButton.setOnClickListener {
                 when(sellerSwitch.isChecked){
                     true -> {

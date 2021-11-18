@@ -1,16 +1,18 @@
 package com.example.localbuddy.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.api.LocalBuddyClient
 import com.example.localbuddy.AuthViewModel
 import com.example.localbuddy.R
+import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentLoginBinding
+import com.example.localbuddy.handleApiCall
 
 class LoginFragment : Fragment() {
 
@@ -37,6 +39,14 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        authViewModel.user.observe(viewLifecycleOwner, {
+            when(it){
+                is Resource.Success -> {
+                    LocalBuddyClient.authToken = it.value.token
+                }
+                is Resource.Faliure -> handleApiCall(it)
+            }
+        })
         _binding?.apply {
             signupText.setOnClickListener {
                 findNavController().navigate(R.id.action_nav_login_to_nav_signup)
@@ -46,9 +56,6 @@ class LoginFragment : Fragment() {
                     usernameEditText.text.toString(),
                     passwordEditText.text.toString()
                 )
-                if(!authViewModel.error.value.isNullOrEmpty()){
-                    Log.d("LoginFragment","yes")
-                }
             }
         }
     }
