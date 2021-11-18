@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.example.api.LocalBuddyClient
 import com.example.localbuddy.AuthViewModel
 import com.example.localbuddy.data.Resource
@@ -16,7 +16,7 @@ import com.example.localbuddy.visible
 class SignupFragment: Fragment() {
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
-    private val authViewModel: AuthViewModel by viewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -19,9 +19,6 @@ class AuthViewModel : ViewModel() {
     private var _user = MutableLiveData<Resource<User>>()
     val user: LiveData<Resource<User>> get() = _user
 
-    private var _error = MutableLiveData<String?>()
-    val error: LiveData<String?> get() = _error
-
     fun login(username: String, password: String) {
         viewModelScope.launch {
             try {
