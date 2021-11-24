@@ -22,4 +22,6 @@ interface LocalBuddyAPI {
     suspend fun signinUser(
         @Body userCreds: SigninRequest
     ): User
+
+    @POST("auth/")
 }

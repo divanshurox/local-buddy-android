@@ -1,5 +1,7 @@
 package com.example.localbuddy
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -18,14 +20,19 @@ import com.example.localbuddy.data.Resource
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
-
+    companion object{
+        private val SHARED_PREF = "shared_pref"
+        private val TOKEN = "token"
+    }
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var authViewModel: AuthViewModel
     private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
         setContentView(R.layout.activity_main)
 
@@ -46,14 +53,17 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        sharedPreferences.getString(TOKEN,null)?.let{
+
+        }
         authViewModel.user.observe({lifecycle},{
             if (it is Resource.Success) {
                 updateMenu(it.value)
+                val inflater = navController.navInflater
+                navController.graph = inflater.inflate(R.navigation.nav_graph_auth)
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
             }
-            val inflater = navController.navInflater
-            navController.graph = inflater.inflate(R.navigation.nav_graph_auth)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
         })
     }
 

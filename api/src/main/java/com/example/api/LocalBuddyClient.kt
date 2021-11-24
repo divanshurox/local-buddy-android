@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object LocalBuddyClient {
     var authToken: String? = null
-    private const val baseUrl = "https://localbuddy12.herokuapp.com/"
+    private const val baseUrl = "https://localbuddy12.herokuapp.com"
 
     private val authInterceptor = Interceptor { chain ->
         var req = chain.request()
