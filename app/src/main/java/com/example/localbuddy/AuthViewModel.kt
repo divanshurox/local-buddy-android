@@ -80,7 +80,6 @@ class AuthViewModel : ViewModel() {
         shopname: String
     ) {
         viewModelScope.launch {
-            Log.d("AuthVieModel",gstno)
             try {
                 AuthRepo.registerSeller(
                     firstname,
@@ -94,6 +93,18 @@ class AuthViewModel : ViewModel() {
                     shopname,
                     isSeller
                 ).let {
+                    _user.value = it
+                }
+            } catch (e: Exception) {
+                Log.d(classTag, "${e.message}")
+            }
+        }
+    }
+
+    fun signinUserToken(token: String){
+        viewModelScope.launch{
+            try{
+                AuthRepo.signinUserToken(token).let{
                     _user.value = it
                 }
             } catch (e: Exception) {

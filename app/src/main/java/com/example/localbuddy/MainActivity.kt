@@ -3,10 +3,12 @@ package com.example.localbuddy
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -20,10 +22,11 @@ import com.example.localbuddy.data.Resource
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
-    companion object{
+    companion object {
         private val SHARED_PREF = "shared_pref"
-        private val TOKEN = "token"
+        private val PREF_TOKEN = "token"
     }
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var authViewModel: AuthViewModel
     private lateinit var navView: NavigationView
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+        sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
         setContentView(R.layout.activity_main)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -53,12 +57,21 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        sharedPreferences.getString(TOKEN,null)?.let{
 
+        sharedPreferences.getString(PREF_TOKEN, null)?.let { t ->
+            Log.d("MainActivity",t)
+            authViewModel.signinUserToken(t)
         }
-        authViewModel.user.observe({lifecycle},{
+
+        authViewModel.user.observe({ lifecycle }, {
             if (it is Resource.Success) {
                 updateMenu(it.value)
+                it.value.token.let{ t ->
+                    sharedPreferences.edit {
+                        putString(PREF_TOKEN,t)
+                    }
+                }
+                navController.popBackStack()
                 val inflater = navController.navInflater
                 navController.graph = inflater.inflate(R.navigation.nav_graph_auth)
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -69,9 +82,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateMenu(user: User?) {
         navView.menu.clear()
-        if(user!=null){
+        if (user != null) {
             navView.inflateMenu(R.menu.activity_main_drawer_auth)
-        }else{
+        } else {
             navView.inflateMenu(R.menu.activity_main_drawer)
         }
     }
@@ -83,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        return when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout.openDrawer(GravityCompat.START)
                 return true
