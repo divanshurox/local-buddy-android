@@ -41,11 +41,14 @@ fun Fragment.handleApiCall(
         )
         faliure.errorCode == 400 -> {
             if (this is LoginFragment) {
-                requireView().snackbar("Incorrect email or password, Please try again")
+                requireView().snackbar("Incorrect email or password, Please try again!")
             }
             if (this is SignupFragment) {
                 requireView().snackbar("Fill all the fields correctly!")
             }
+        }
+        faliure.errorCode == 401 -> {
+            requireView().snackbar("Session timed out, Please try again!")
         }
         else -> {
             val error = faliure.errorBody.toString()
