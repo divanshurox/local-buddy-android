@@ -1,6 +1,7 @@
 package com.example.localbuddy.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         authViewModel.user.observe(viewLifecycleOwner, {
+            Log.d("LoginFragment",it.toString())
             when(it){
                 is Resource.Success -> {
                     LocalBuddyClient.authToken = it.value.token
