@@ -21,9 +21,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
+            android:layout_margin="3dp"
             app:cardCornerRadius="3dp"
             app:cardElevation="8dp"
-            android:layout_margin="3dp"
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-black"
-                    android:textSize="15sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -47,45 +47,44 @@
                     android:id="@id/product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Nike GTX"
-                    android:textSize="15sp"
                     android:layout_marginTop="10dp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/product_title" />
+                    app:layout_constraintTop_toBottomOf="@id/product_title"
+                    tools:text="Nike GTX" />
 
                 <TextView
                     android:id="@+id/product_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Nike GTX"
-                    android:textSize="15sp"
                     android:layout_marginTop="10dp"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/product_price"/>
+                    app:layout_constraintTop_toBottomOf="@id/product_price"
+                    tools:text="Nike GTX" />
 
                 <LinearLayout
                     android:id="@+id/button_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
                     <Button
                         android:id="@+id/containedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Buy Now"
                         android:layout_weight="50"
-                        />
+                        android:text="@string/buy_now" />
 
                     <Button
                         android:id="@+id/textButton"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add to cart"
                         android:layout_weight="50"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        />
+                        android:text="@string/add_to_cart" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,18 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph_auth"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/nav_home">
 
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/nav_home"
         android:name="com.example.localbuddy.ui.home.HomeFragment"
         android:label="Home" >
         <action
             android:id="@+id/action_homeFragment_to_productFragment"
-            app:destination="@id/productFragment" />
+            app:destination="@id/nav_product" />
     </fragment>
     <fragment
-        android:id="@+id/productFragment"
+        android:id="@+id/nav_product"
         android:name="com.example.localbuddy.ui.product.ProductFragment"
         android:label="ProductFragment" >
         <argument

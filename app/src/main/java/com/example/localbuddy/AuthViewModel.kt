@@ -16,8 +16,8 @@ class AuthViewModel : ViewModel() {
         const val classTag: String = "AuthViewModel"
     }
 
-    private var _user = MutableLiveData<Resource<User>>()
-    val user: LiveData<Resource<User>> get() = _user
+    private var _user = MutableLiveData<Resource<User>?>()
+    val user: LiveData<Resource<User>?> get() = _user
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
@@ -111,5 +111,9 @@ class AuthViewModel : ViewModel() {
                 Log.d(classTag, "${e.message}")
             }
         }
+    }
+
+    fun logout() {
+        _user.value = null
     }
 }
