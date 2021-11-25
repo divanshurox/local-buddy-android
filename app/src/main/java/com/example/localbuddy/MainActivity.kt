@@ -1,10 +1,14 @@
 package com.example.localbuddy
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.edit
@@ -36,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
@@ -54,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_login,
+                R.id.nav_signup,
                 R.id.nav_home
             ), drawerLayout
         )
@@ -93,8 +99,13 @@ class MainActivity : AppCompatActivity() {
                 }
                 navController.popBackStack()
                 navController.graph = inflater.inflate(R.navigation.nav_graph_auth)
-                supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+                val navHeader: View = navView.getHeaderView(0)
+                val navHeaderName: TextView = navHeader.findViewById(R.id.nav_header_name)
+                val navHeaderUsername: TextView = navHeader.findViewById(R.id.nav_header_username)
+                val navHeaderImageView: ImageView = navHeader.findViewById(R.id.nav_header_image)
+                navHeaderName.text = it.value.firstname + " " + it.value.lastname
+                navHeaderUsername.text = it.value.username
+                navHeaderImageView.avatarUrl(it.value.avatar)
             } else if (it == null) {
                 updateMenu(it)
                 navController.popBackStack()
@@ -105,18 +116,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun selectDrawerItem(item: MenuItem) {
         when (item.itemId) {
-            R.id.nav_login -> replaceFragment(item, LoginFragment(), item.title.toString())
-            R.id.nav_signup -> replaceFragment(item, SignupFragment(), item.title.toString())
+            R.id.nav_login -> replaceFragment(LoginFragment(), item.title.toString())
+            R.id.nav_signup -> replaceFragment(SignupFragment(), item.title.toString())
         }
     }
 
-    private fun replaceFragment(item: MenuItem, fragment: Fragment, title: String) {
+    private fun replaceFragment(fragment: Fragment, title: String) {
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, fragment).setTransition(
+            .replace(R.id.frame_layout, fragment, title).setTransition(
                 FragmentTransaction.TRANSIT_FRAGMENT_OPEN
             )
-            .addToBackStack(null).commit()
+            .addToBackStack(title)
+            .setReorderingAllowed(true).commit()
         supportActionBar?.title = title
         drawerLayout.closeDrawers()
     }

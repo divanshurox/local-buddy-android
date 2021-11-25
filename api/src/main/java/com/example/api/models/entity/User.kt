@@ -24,8 +24,8 @@ data class User(
     val password: String,
     @Json(name = "phone")
     val phone: String,
-    @Json(name = "picture")
-    val picture: String,
+    @Json(name = "avatar")
+    val avatar: String,
     @Json(name = "shopName")
     val shopName: String,
     @Json(name = "token")

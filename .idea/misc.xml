@@ -6,10 +6,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/localbuddy/app/src/main/res/drawable/side_nav_bar.xml" value="0.2128205128205128" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/content_main.xml" value="0.1" />
-        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_product.xml" value="0.14666666666666667" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/list_item_product.xml" value="0.1" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/nav_header_main.xml" value="0.1" />
       </map>
     </option>
   </component>

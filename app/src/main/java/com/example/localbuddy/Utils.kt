@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.api.models.entity.Product
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.ui.auth.LoginFragment
@@ -64,6 +65,17 @@ fun ImageView.imgUrl(
     imgUrl?.let {
         val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
         load(imgUri)
+    }
+}
+
+fun ImageView.avatarUrl(
+    imgUrl: String?
+) {
+    imgUrl?.let {
+        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+        load(imgUri){
+            transformations(CircleCropTransformation())
+        }
     }
 }
 

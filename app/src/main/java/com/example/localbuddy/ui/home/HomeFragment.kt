@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.localbuddy.AuthViewModel
 import com.example.localbuddy.R
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentHomeBinding
@@ -21,6 +23,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var productsAdapter: ProductsAdapter
     private lateinit var homeViewModel: HomeViewModel
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +50,15 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         homeViewModel.products.observe(viewLifecycleOwner, {
             when(it){
-                is Resource.Success -> binding.productsList.listData(it.value)
+                is Resource.Success -> binding.apply{
+                    productsList.listData(it.value)
+                    authViewModel.user.value?.let{
+                        when(it){
+                            is Resource.Success -> introMessage.text = "Hey, ${it.value.firstname} ${it.value.lastname}"
+                        }
+                    }
+
+                }
                 is Resource.Faliure -> handleApiCall(it)
             }
         })
