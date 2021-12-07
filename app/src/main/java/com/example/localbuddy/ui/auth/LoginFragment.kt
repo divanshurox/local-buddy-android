@@ -34,8 +34,7 @@ class LoginFragment : Fragment() {
             viewModel = authViewModel
             lifecycleOwner = viewLifecycleOwner
         }
-        val root: View = binding.root
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +57,14 @@ class LoginFragment : Fragment() {
                     usernameEditText.text.toString(),
                     passwordEditText.text.toString()
                 )
+                authViewModel.user.observe(viewLifecycleOwner, {
+                    if(it is Resource.Success){
+                        val navController = findNavController()
+                        val inflater = navController.navInflater
+                        navController.popBackStack()
+                        navController.graph = inflater.inflate(R.navigation.nav_graph_auth)
+                    }
+                })
             }
         }
     }

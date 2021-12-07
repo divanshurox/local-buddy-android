@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "746022325792",
+    "project_id": "localbuddy-da7be",
+    "storage_bucket": "localbuddy-da7be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746022325792:android:cd51d024e247e6e5c97645",
+        "android_client_info": {
+          "package_name": "com.example.localbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746022325792-k3dsqhb0vbvtpatim01trna7cjqcetub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuvw2lrazpBO0m1Tx9xDxjAjlu4WE3OA4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746022325792-k3dsqhb0vbvtpatim01trna7cjqcetub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

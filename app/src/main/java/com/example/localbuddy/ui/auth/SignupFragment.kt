@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.api.LocalBuddyClient
 import com.example.localbuddy.AuthViewModel
+import com.example.localbuddy.R
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentSignupBinding
 import com.example.localbuddy.handleApiCall
@@ -76,6 +79,12 @@ class SignupFragment: Fragment() {
                         )
                     }
                 }
+                authViewModel.user.observe(viewLifecycleOwner,{
+                    if(it is Resource.Success){
+                        val bundle = bundleOf("number" to phone.text.toString())
+                        findNavController().navigate(R.id.action_nav_signup_to_mobileAuthFragment,bundle)
+                    }
+                })
             }
         }
     }

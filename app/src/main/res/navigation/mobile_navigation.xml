@@ -19,6 +19,29 @@
         android:id="@+id/nav_signup"
         android:name="com.example.localbuddy.ui.auth.SignupFragment"
         android:label="@string/menu_signup"
-        tools:layout="@layout/fragment_signup" />
+        tools:layout="@layout/fragment_signup" >
+        <action
+            android:id="@+id/action_nav_signup_to_mobileAuthFragment"
+            app:destination="@id/mobileAuthFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mobileAuthFragment"
+        android:name="com.example.localbuddy.ui.auth.MobileAuthFragment"
+        android:label="MobileAuthFragment" >
+        <action
+            android:id="@+id/action_mobileAuthFragment_to_otpValidationFragment"
+            app:destination="@id/otpValidationFragment" />
+        <argument
+            android:name="number"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/otpValidationFragment"
+        android:name="com.example.localbuddy.ui.auth.OtpValidationFragment"
+        android:label="OtpValidationFragment" >
+        <argument
+            android:name="number"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

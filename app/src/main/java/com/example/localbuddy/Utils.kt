@@ -58,6 +58,10 @@ fun Fragment.handleApiCall(
     }
 }
 
+fun Fragment.displayError(msg: String){
+    requireView().snackbar(msg)
+}
+
 
 fun ImageView.imgUrl(
     imgUrl: String?
