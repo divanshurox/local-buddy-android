@@ -19,5 +19,33 @@
         <argument
             android:name="productId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_nav_product_to_buyNowFragment"
+            app:destination="@id/buyNowFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/buyNowFragment"
+        android:name="com.example.localbuddy.ui.checkout.BuyNowFragment"
+        android:label="BuyNowFragment" >
+        <argument
+            android:name="product"
+            app:argType="com.example.localbuddy.navObject.Product" />
+        <action
+            android:id="@+id/action_buyNowFragment_to_orderConfirmed"
+            app:destination="@id/orderConfirmed" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.example.localbuddy.ui.checkout.CheckoutFragment"
+        android:label="CheckoutFragment" />
+    <fragment
+        android:id="@+id/orderConfirmed"
+        android:name="com.example.localbuddy.ui.checkout.OrderConfirmed"
+        android:label="OrderConfirmed" >
+        <action
+            android:id="@+id/action_orderConfirmed_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

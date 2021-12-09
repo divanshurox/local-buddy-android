@@ -85,7 +85,7 @@ class MobileAuthFragment : Fragment() {
     private fun sendOtp(number: String){
         if (number.trim().isNotEmpty() && number.toString().trim().length == 10) {
             val options = PhoneAuthOptions.newBuilder(auth)
-                .setPhoneNumber("+91" + number!!)
+                .setPhoneNumber("+91" + number)
                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                 .setActivity(activity!!)
                 .setCallbacks(callbacks)
