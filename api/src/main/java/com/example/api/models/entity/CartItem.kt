@@ -6,5 +6,5 @@ data class CartItem(
     @Json(name = "product")
     val product: Product,
     @Json(name = "quantity")
-    val quantity: Int
+    var quantity: Int
 )

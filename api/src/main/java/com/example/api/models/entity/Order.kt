@@ -5,8 +5,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Order(
-    @Json(name = "sellerId")
-    val sellerId: String,
     @Json(name = "userId")
     val userId: String,
     @Json(name = "cart")

@@ -1,5 +1,6 @@
 package com.example.localbuddy.ui.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,11 +12,12 @@ import com.example.localbuddy.imgUrl
 
 class ProductsAdapter(val onProductClicked: (productId: String) -> Unit): ListAdapter<Product,ProductsAdapter.ProductViewHolder>(DiffCallback) {
     inner class ProductViewHolder(private var binding: ListItemProductBinding): RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(product: Product){
             binding.productTitle.text = product.name
             binding.productDesc.text = product.description
             binding.productImage.imgUrl(product.photos[0].url)
-            binding.productPrice.text = product.price.toString()
+            binding.productPrice.text = "Rs. $product.price.toString()"
             binding.root.setOnClickListener {
                 onProductClicked(product.id)
             }

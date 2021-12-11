@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.localbuddy.R
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentProductBinding
 import com.example.localbuddy.handleApiCall
@@ -73,7 +72,7 @@ class ProductFragment : Fragment() {
                     }
                     (activity as AppCompatActivity).supportActionBar?.apply {
                         title = it.value.name
-                        setHomeAsUpIndicator(R.drawable.ic_menu)
+//                        setHomeAsUpIndicator(R.drawable.ic_menu)
                     }
                 }
                 is Resource.Faliure -> handleApiCall(it)
