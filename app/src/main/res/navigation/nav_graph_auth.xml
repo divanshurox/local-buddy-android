@@ -48,4 +48,20 @@
             app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_orders"
+        android:name="com.example.localbuddy.ui.orders.OrdersFragment"
+        android:label="@string/orders_menu" >
+        <action
+            android:id="@+id/action_nav_orders_to_orderFragment"
+            app:destination="@id/orderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.example.localbuddy.ui.orders.OrderFragment"
+        android:label="OrderFragment" >
+        <argument
+            android:name="orderId"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -10,5 +10,7 @@ data class Order(
     @Json(name = "cart")
     val cart: List<CartItem>,
     @Json(name = "amount")
-    val amount: Int
+    val amount: Int,
+    @Json(name = "orderDate")
+    val orderDate: String
 )

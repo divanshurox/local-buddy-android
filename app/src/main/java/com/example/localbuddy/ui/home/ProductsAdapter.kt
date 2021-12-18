@@ -17,7 +17,7 @@ class ProductsAdapter(val onProductClicked: (productId: String) -> Unit): ListAd
             binding.productTitle.text = product.name
             binding.productDesc.text = product.description
             binding.productImage.imgUrl(product.photos[0].url)
-            binding.productPrice.text = "Rs. $product.price.toString()"
+            binding.productPrice.text = "Rs. ${product.price}"
             binding.root.setOnClickListener {
                 onProductClicked(product.id)
             }

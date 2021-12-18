@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.example.api.models.entity.Order
 import com.example.api.models.entity.Product
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.ui.auth.LoginFragment
 import com.example.localbuddy.ui.auth.SignupFragment
 import com.example.localbuddy.ui.home.ProductsAdapter
+import com.example.localbuddy.ui.orders.OrdersListAdapter
 import com.google.android.material.snackbar.Snackbar
 
 fun View.visible(isVisible: Boolean) {
@@ -89,4 +91,12 @@ fun RecyclerView.listData(
     val adapter = this.adapter as ProductsAdapter
     adapter.submitList(data)
 }
+
+fun RecyclerView.listOrderData(
+    data: List<Order>?
+){
+    val adapter = this.adapter as OrdersListAdapter
+    adapter.submitList(data)
+}
+
 

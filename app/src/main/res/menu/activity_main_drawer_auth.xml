@@ -6,6 +6,10 @@
             android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_orders"
+            android:title="@string/orders_menu"
+            android:icon="@drawable/ic_shopping_cart"/>
+        <item
             android:id="@+id/action_logout"
             android:icon="@drawable/ic_logout"
             android:title="@string/logout" />

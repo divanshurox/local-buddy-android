@@ -14,18 +14,15 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.api.models.entity.User
 import com.example.localbuddy.data.Resource
-import com.example.localbuddy.ui.auth.LoginFragment
-import com.example.localbuddy.ui.auth.SignupFragment
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var navController: NavController
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        navController = findNavController(R.id.nav_host_fragment_content_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -76,10 +74,10 @@ class MainActivity : AppCompatActivity() {
                             remove(PREF_TOKEN)
                         }
                     }
-                    drawerLayout.closeDrawers()
                 }
-                else -> selectDrawerItem(it)
+                else -> NavigationUI.onNavDestinationSelected(it,navController)
             }
+            drawerLayout.closeDrawers()
             return@setNavigationItemSelectedListener true
         }
 
@@ -114,24 +112,24 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun selectDrawerItem(item: MenuItem) {
-        when (item.itemId) {
-            R.id.nav_login -> replaceFragment(LoginFragment(), item.title.toString())
-            R.id.nav_signup -> replaceFragment(SignupFragment(), item.title.toString())
-        }
-    }
-
-    private fun replaceFragment(fragment: Fragment, title: String) {
-        val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, fragment, title).setTransition(
-                FragmentTransaction.TRANSIT_FRAGMENT_OPEN
-            )
-            .addToBackStack(title)
-            .setReorderingAllowed(true).commit()
-        supportActionBar?.title = title
-        drawerLayout.closeDrawers()
-    }
+//    private fun selectDrawerItem(item: MenuItem) {
+//        when (item.itemId) {
+//            R.id.nav_login -> replaceFragment(LoginFragment(), item.title.toString())
+//            R.id.nav_signup -> replaceFragment(SignupFragment(), item.title.toString())
+//        }
+//    }
+//
+//    private fun replaceFragment(fragment: Fragment, title: String) {
+//        supportFragmentManager.commit{
+//            add(R.id.frame_layout, fragment, title).setTransition(
+//                FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+//            )
+//            setReorderingAllowed(true)
+//            addToBackStack(title)
+//        }
+//        supportActionBar?.title = title
+//        drawerLayout.closeDrawers()
+//    }
 
     private fun updateMenu(user: User?) {
         navView.menu.clear()
@@ -159,7 +157,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return NavigationUI.navigateUp(navController,drawerLayout) || super.onSupportNavigateUp()
     }
 }
