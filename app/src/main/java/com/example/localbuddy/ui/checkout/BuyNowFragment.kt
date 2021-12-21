@@ -14,12 +14,9 @@ import androidx.navigation.fragment.navArgs
 import com.example.api.models.entity.CartItem
 import com.example.api.models.entity.Photo
 import com.example.api.models.entity.Product
-import com.example.localbuddy.AuthViewModel
-import com.example.localbuddy.R
+import com.example.localbuddy.*
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentBuynowBinding
-import com.example.localbuddy.displayError
-import com.example.localbuddy.imgUrl
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,6 +63,8 @@ class BuyNowFragment : Fragment() {
             deliveryDate.text = getDeliveryDate()
             placeOrder.setOnClickListener {
                 try {
+                    progressBar.visible(true)
+                    placeOrder.visible(false)
                     val product = Product(
                         args.product.id,
                         args.product.sellerId,
@@ -79,11 +78,11 @@ class BuyNowFragment : Fragment() {
                         listOf(CartItem(product, 1)),
                         userId!!
                     )
+                    val action = BuyNowFragmentDirections.actionBuyNowFragmentToOrderConfirmed()
+                    findNavController().navigate(action)
                 } catch (e: Exception) {
                     displayError(e.message.toString())
                 }
-                val action = BuyNowFragmentDirections.actionBuyNowFragmentToOrderConfirmed()
-                findNavController().navigate(action)
             }
         }
     }

@@ -47,6 +47,4 @@ class OrdersListAdapter : ListAdapter<Order, OrdersListAdapter.OrderViewHolder>(
         val order = getItem(position)
         holder.bind(order)
     }
-
-
 }

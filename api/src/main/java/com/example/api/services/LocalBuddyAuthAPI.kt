@@ -1,10 +1,9 @@
 package com.example.api.services
 
+import com.example.api.models.entity.Feedback
 import com.example.api.models.entity.Order
 import com.example.api.models.entity.Product
-import com.example.api.models.request.CreateOrderRequest
-import com.example.api.models.request.GetOrdersRequest
-import com.example.api.models.request.ProductByIdRequest
+import com.example.api.models.request.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -23,9 +22,24 @@ interface LocalBuddyAuthAPI {
         @Body productParams: ProductByIdRequest
     ): Product
 
-    @POST("orders/create")
+    @POST("/orders/create")
     suspend fun createOrder(
         @Body cartParams: CreateOrderRequest
     ): Order
+
+    @POST("/products/add-feedback")
+    suspend fun addFeedback(
+        @Body feedbackParams: AddFeedbackRequest
+    ): Feedback
+
+    @POST("/products/delete-feedback")
+    suspend fun deleteFeedback(
+        @Body feedbackParams: DeleteFeedbackRequest
+    ): Feedback
+
+    @POST("/products/feedback")
+    suspend fun getFeedbacksById(
+        @Body feedbackParams: GetFeedbacksRequest
+    ): List<Feedback>
 
 }

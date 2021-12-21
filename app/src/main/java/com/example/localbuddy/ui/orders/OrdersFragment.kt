@@ -19,7 +19,6 @@ import com.example.localbuddy.listOrderData
 class OrdersFragment : Fragment() {
     private var _binding: FragmentOrdersBinding? = null
     val binding: FragmentOrdersBinding get() = _binding!!
-    private lateinit var ordersAdapter: OrdersListAdapter
     private val orderViewModel: OrdersViewModel by viewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private lateinit var userId: String
@@ -30,11 +29,10 @@ class OrdersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOrdersBinding.inflate(inflater, container, false)
-        ordersAdapter = OrdersListAdapter()
         _binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             ordersList.layoutManager = LinearLayoutManager(context)
-            ordersList.adapter = ordersAdapter
+            ordersList.adapter = OrdersListAdapter()
         }
         return binding.root
     }

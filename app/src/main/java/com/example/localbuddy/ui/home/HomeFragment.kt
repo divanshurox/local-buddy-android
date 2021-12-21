@@ -32,7 +32,9 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        productsAdapter = ProductsAdapter {onClickProduct(it)}
+        productsAdapter = ProductsAdapter {
+            onClickProduct(it)
+        }
         _binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             productsList.layoutManager = LinearLayoutManager(context)

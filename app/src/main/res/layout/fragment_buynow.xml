@@ -213,6 +213,12 @@
                 android:layout_height="wrap_content"
                 android:text="Place order"
                 android:textSize="16sp"/>
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 </layout>
