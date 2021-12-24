@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_homeFragment_to_productFragment"
             app:destination="@id/nav_product" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_cart"
+            app:destination="@id/nav_cart" />
     </fragment>
     <fragment
         android:id="@+id/nav_product"
@@ -35,9 +38,13 @@
             app:destination="@id/orderConfirmed" />
     </fragment>
     <fragment
-        android:id="@+id/checkoutFragment"
+        android:id="@+id/nav_cart"
         android:name="com.example.localbuddy.ui.checkout.CheckoutFragment"
-        android:label="CheckoutFragment" />
+        android:label="CheckoutFragment" >
+        <action
+            android:id="@+id/action_nav_cart_to_orderConfirmed"
+            app:destination="@id/orderConfirmed" />
+    </fragment>
     <fragment
         android:id="@+id/orderConfirmed"
         android:name="com.example.localbuddy.ui.checkout.OrderConfirmed"

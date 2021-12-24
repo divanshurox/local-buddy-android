@@ -11,9 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.api.models.entity.CartItem
-import com.example.api.models.entity.Photo
-import com.example.api.models.entity.Product
 import com.example.localbuddy.*
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentBuynowBinding
@@ -65,17 +62,7 @@ class BuyNowFragment : Fragment() {
                 try {
                     progressBar.visible(true)
                     placeOrder.visible(false)
-                    val product = Product(
-                        args.product.id,
-                        args.product.sellerId,
-                        args.product.name,
-                        args.product.price,
-                        args.product.description,
-                        listOf(Photo(args.product.photo))
-                    )
                     cartViewModel.createOrder(
-                        args.product.price,
-                        listOf(CartItem(product, 1)),
                         userId!!
                     )
                     val action = BuyNowFragmentDirections.actionBuyNowFragmentToOrderConfirmed()

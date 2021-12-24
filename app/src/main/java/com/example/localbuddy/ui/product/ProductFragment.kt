@@ -92,7 +92,10 @@ class ProductFragment : Fragment() {
                         productTitle.text = it.value.name
                         productDesc.text = it.value.description
                         productPrice.text = "MRP: ${it.value.price.toString()}"
-                        addToCart.setOnClickListener { _ -> cartViewModel.addItem(it.value) }
+                        addToCart.setOnClickListener { _ ->
+                            cartViewModel.addItem(it.value)
+                            Toast.makeText(context, "Item added to cart.", Toast.LENGTH_LONG).show()
+                        }
                         addFeedback.setOnClickListener {
                             val customLayout =
                                 layoutInflater.inflate(R.layout.feedback_dialog, null)
@@ -135,7 +138,7 @@ class ProductFragment : Fragment() {
                     }
                     (activity as AppCompatActivity).supportActionBar?.apply {
                         title = it.value.name
-//                        setHomeAsUpIndicator(R.drawable.ic_menu)
+                        setHomeAsUpIndicator(R.drawable.ic_menu)
                     }
                 }
                 is Resource.Faliure -> handleApiCall(it)

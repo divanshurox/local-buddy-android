@@ -10,26 +10,70 @@ import com.example.localbuddy.data.OrdersRepo
 import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
+    companion object {
+        val GIFTING = 500
+    }
     private val _cartItems = MutableLiveData<MutableList<CartItem>?>()
     val cartItems: LiveData<MutableList<CartItem>?> get() = _cartItems
+
+    private val _totalAmount = MutableLiveData<Int>()
+    val totalAmount: LiveData<Int> get() = _totalAmount
+
+    init{
+        _cartItems.value = mutableListOf()
+        _totalAmount.value = 0
+    }
 
     fun addItem(product: Product) {
         _cartItems.value?.map {
             if(it.product == product){
                 it.quantity++
+                _totalAmount.value = _totalAmount.value?.plus(product.price)
                 return;
             }
         }
         _cartItems.value?.add(CartItem(product,1))
+        _totalAmount.value = _totalAmount.value?.plus(product.price)
+    }
+
+    fun incQuantity(productId: String){
+        _cartItems.value?.map{
+            if(it.product.id==productId){
+                it.quantity++
+                _totalAmount.value = _totalAmount.value?.plus(it.product.price)
+            }
+        }
+    }
+
+    fun decQuantity(productId: String){
+        _cartItems.value?.map{
+            if(it.product.id==productId){
+                it.quantity--
+                _totalAmount.value = _totalAmount.value?.minus(it.product.price)
+            }
+        }
     }
 
     fun removeItem(productId: String) {
+        val item = _cartItems.value?.find { it.product.id == productId }
         _cartItems.value?.removeAll { it.product.id == productId }
+        _cartItems.postValue(_cartItems.value)
+        _totalAmount.value = item?.product?.let { _totalAmount.value?.minus(it.price) }
     }
 
-    fun createOrder(amount: Int,cart: List<CartItem>,userId: String){
-        viewModelScope.launch{
-            OrdersRepo.createOrder(amount,userId,cart)
+    fun optGiftingOption(yes: Boolean){
+        if(yes){
+            _totalAmount.value = _totalAmount.value?.plus(GIFTING)
+        }else{
+            _totalAmount.value = _totalAmount.value?.minus(GIFTING)
+        }
+    }
+
+    fun createOrder(userId: String){
+        if(_cartItems.value!!.size > 0){
+            viewModelScope.launch{
+                OrdersRepo.createOrder(_totalAmount.value!!,userId,_cartItems.value!!)
+            }
         }
     }
 }

@@ -37,4 +37,6 @@
     <string name="confirm_msg">Congratulations! Your order has been placed and will be delivered to you shortly</string>
     <string name="orders_menu">Your Orders</string>
     <string name="add_feedback">Add Feedback</string>
+    <string name="your_cart">Your Cart</string>
+    <string name="add_gift_options">Add gift options</string>
 </resources>

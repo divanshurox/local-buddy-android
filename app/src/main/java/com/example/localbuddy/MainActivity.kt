@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             authViewModel.signinUserToken(t)
         }
 
+
         authViewModel.user.observe({ lifecycle }, {
             val inflater = navController.navInflater
             if (it is Resource.Success) {

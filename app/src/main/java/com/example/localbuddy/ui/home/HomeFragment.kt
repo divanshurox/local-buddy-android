@@ -10,12 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.localbuddy.AuthViewModel
-import com.example.localbuddy.R
+import com.example.localbuddy.*
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentHomeBinding
-import com.example.localbuddy.handleApiCall
-import com.example.localbuddy.listData
+import com.example.localbuddy.ui.checkout.CartViewModel
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -24,6 +22,7 @@ class HomeFragment : Fragment() {
     private lateinit var productsAdapter: ProductsAdapter
     private lateinit var homeViewModel: HomeViewModel
     private val authViewModel: AuthViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +53,10 @@ class HomeFragment : Fragment() {
             when(it){
                 is Resource.Success -> binding.apply{
                     productsList.listData(it.value)
+                    fab.setOnClickListener {
+                        val action = HomeFragmentDirections.actionNavHomeToNavCart()
+                        findNavController().navigate(action)
+                    }
                     authViewModel.user.value?.let{
                         when(it){
                             is Resource.Success -> introMessage.text = "Hey, ${it.value.firstname} ${it.value.lastname}"
@@ -64,6 +67,15 @@ class HomeFragment : Fragment() {
                 is Resource.Faliure -> handleApiCall(it)
             }
         })
+        cartViewModel.cartItems.observe(viewLifecycleOwner){
+            _binding?.apply{
+                if(it!!.size>0){
+                    fab.visible(true)
+                }else{
+                    fab.visible(false)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

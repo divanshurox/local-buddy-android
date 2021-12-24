@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.example.api.models.entity.CartItem
 import com.example.api.models.entity.Feedback
 import com.example.api.models.entity.Order
 import com.example.api.models.entity.Product
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.ui.auth.LoginFragment
 import com.example.localbuddy.ui.auth.SignupFragment
+import com.example.localbuddy.ui.checkout.CartListAdapter
 import com.example.localbuddy.ui.home.ProductsAdapter
 import com.example.localbuddy.ui.orders.OrdersListAdapter
 import com.example.localbuddy.ui.product.FeedbacksListAdapter
@@ -101,6 +103,13 @@ fun RecyclerView.listOrderData(
     data: List<Order>?
 ){
     val adapter = this.adapter as OrdersListAdapter
+    adapter.submitList(data)
+}
+
+fun RecyclerView.listCartData(
+    data: MutableList<CartItem>?
+){
+    val adapter = this.adapter as CartListAdapter
     adapter.submitList(data)
 }
 
