@@ -11,6 +11,10 @@ import com.example.localbuddy.data.OrdersRepo
 import com.example.localbuddy.data.Resource
 import kotlinx.coroutines.launch
 
+enum class OrderStatus{
+    NONE, SUCCESS, ERROR
+}
+
 class CartViewModel : ViewModel() {
     companion object {
         val GIFTING = 500
@@ -24,12 +28,13 @@ class CartViewModel : ViewModel() {
     private val _orderDetails = MutableLiveData<Resource<Order>>()
     val orderDetails: LiveData<Resource<Order>> get() = _orderDetails
 
-    private val _orderStatus = MutableLiveData<String>()
-    val orderStatus: LiveData<String> get() = _orderStatus
+    private val _orderStatus = MutableLiveData<OrderStatus>()
+    val orderStatus: LiveData<OrderStatus> get() = _orderStatus
 
     init{
         _cartItems.value = mutableListOf()
         _totalAmount.value = 0
+        _orderStatus.value = OrderStatus.NONE
     }
 
     fun addItem(product: Product) {
@@ -88,7 +93,10 @@ class CartViewModel : ViewModel() {
     }
 
     fun setStatus(status: String){
-        _orderStatus.value = status
+        when(status){
+            "success" -> _orderStatus.value = OrderStatus.SUCCESS
+            else -> _orderStatus.value = OrderStatus.ERROR
+        }
     }
 
 }

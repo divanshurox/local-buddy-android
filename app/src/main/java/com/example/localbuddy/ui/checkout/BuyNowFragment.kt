@@ -80,11 +80,11 @@ class BuyNowFragment : Fragment() {
             }
         }
         cartViewModel.orderStatus.observe(viewLifecycleOwner){
-            if(it == "success"){
+            if(it == OrderStatus.SUCCESS){
                 Toast.makeText(context,"Payment successful!",Toast.LENGTH_LONG).show()
                 val action = BuyNowFragmentDirections.actionBuyNowFragmentToOrderConfirmed()
                 findNavController().navigate(action)
-            }else{
+            }else if(it == OrderStatus.ERROR){
                 displayError("Payment failed")
             }
         }
