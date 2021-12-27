@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.api.models.entity.CartItem
+import com.example.api.models.entity.Order
 import com.example.api.models.entity.Product
 import com.example.localbuddy.data.OrdersRepo
+import com.example.localbuddy.data.Resource
 import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
@@ -18,6 +20,12 @@ class CartViewModel : ViewModel() {
 
     private val _totalAmount = MutableLiveData<Int>()
     val totalAmount: LiveData<Int> get() = _totalAmount
+
+    private val _orderDetails = MutableLiveData<Resource<Order>>()
+    val orderDetails: LiveData<Resource<Order>> get() = _orderDetails
+
+    private val _orderStatus = MutableLiveData<String>()
+    val orderStatus: LiveData<String> get() = _orderStatus
 
     init{
         _cartItems.value = mutableListOf()
@@ -72,8 +80,15 @@ class CartViewModel : ViewModel() {
     fun createOrder(userId: String){
         if(_cartItems.value!!.size > 0){
             viewModelScope.launch{
-                OrdersRepo.createOrder(_totalAmount.value!!,userId,_cartItems.value!!)
+                OrdersRepo.createOrder(_totalAmount.value!!,userId,_cartItems.value!!).let{
+                    _orderDetails.value = it
+                }
             }
         }
     }
+
+    fun setStatus(status: String){
+        _orderStatus.value = status
+    }
+
 }

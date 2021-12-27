@@ -5,15 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.localbuddy.*
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentBuynowBinding
+import com.razorpay.Checkout
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,7 +23,7 @@ class BuyNowFragment : Fragment() {
     private var _binding: FragmentBuynowBinding? = null
     val binding: FragmentBuynowBinding get() = _binding!!
     private val args by navArgs<BuyNowFragmentArgs>()
-    private val cartViewModel: CartViewModel by viewModels()
+    private val cartViewModel: CartViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private var userId: String? = null
 
@@ -58,6 +60,8 @@ class BuyNowFragment : Fragment() {
                 }
             }
             deliveryDate.text = getDeliveryDate()
+            productPrice.text = args.product.price.toString()
+            totalAmount.text = args.product.price.toString()
             placeOrder.setOnClickListener {
                 try {
                     progressBar.visible(true)
@@ -65,12 +69,54 @@ class BuyNowFragment : Fragment() {
                     cartViewModel.createOrder(
                         userId!!
                     )
-                    val action = BuyNowFragmentDirections.actionBuyNowFragmentToOrderConfirmed()
-                    findNavController().navigate(action)
                 } catch (e: Exception) {
                     displayError(e.message.toString())
                 }
             }
+        }
+        cartViewModel.orderDetails.observe(viewLifecycleOwner){
+            if(it is Resource.Success){
+                startPayment(it.value.amount,it.value.razorpayId)
+            }
+        }
+        cartViewModel.orderStatus.observe(viewLifecycleOwner){
+            if(it == "success"){
+                Toast.makeText(context,"Payment successful!",Toast.LENGTH_LONG).show()
+                val action = BuyNowFragmentDirections.actionBuyNowFragmentToOrderConfirmed()
+                findNavController().navigate(action)
+            }else{
+                displayError("Payment failed")
+            }
+        }
+    }
+
+    private fun startPayment(amount: Int,orderId: String){
+        val co = Checkout()
+        co.setKeyID("rzp_test_HreYOPYxd0zZw6")
+        try{
+            val options = JSONObject()
+            options.put("name","LocalBuddy")
+            options.put("description","Empowering local stores")
+            //You can omit the image option to fetch the image from dashboard
+            options.put("image","https://firebasestorage.googleapis.com/v0/b/localbuddy-da7be.appspot.com/o/store.png?alt=media&token=176ccc37-c9f7-4b5d-92f6-52bbafdb51de")
+            options.put("theme.color", "#3399cc");
+            options.put("currency","INR");
+            options.put("order_id", orderId);
+            options.put("amount",amount)//pass amount in currency subunits
+
+            val retryObj = JSONObject();
+            retryObj.put("enabled", true);
+            retryObj.put("max_count", 4);
+            options.put("retry", retryObj);
+
+            val prefill = JSONObject()
+            prefill.put("email",(authViewModel.user.value as Resource.Success).value.email)
+            prefill.put("contact",(authViewModel.user.value as Resource.Success).value.phone)
+            options.put("prefill",prefill)
+            co.open(activity,options)
+        }catch(e: Exception){
+            Toast.makeText(context,"Error in payment: "+ e.message,Toast.LENGTH_LONG).show()
+            e.printStackTrace()
         }
     }
 
@@ -81,9 +127,5 @@ class BuyNowFragment : Fragment() {
         val date = formatter.format(calender.time)
         date.split(" ").joinToString("-")
         return date
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 }

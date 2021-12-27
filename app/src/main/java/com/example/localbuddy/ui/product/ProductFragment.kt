@@ -123,6 +123,7 @@ class ProductFragment : Fragment() {
                                 .show()
                         }
                         buyNow.setOnClickListener { _ ->
+                            cartViewModel.addItem(it.value)
                             val product = Product(
                                 it.value.id,
                                 it.value.sellerId,

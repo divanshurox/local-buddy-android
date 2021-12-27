@@ -7,6 +7,13 @@ plugins {
     id("kotlin-parcelize")
 }
 
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -62,4 +69,5 @@ dependencies {
     implementation project(":api")
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
+    implementation 'com.razorpay:checkout:1.6.12'
 }

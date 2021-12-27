@@ -59,24 +59,35 @@ class CheckoutFragment : Fragment() {
             }
         }
         cartViewModel.cartItems.observe(viewLifecycleOwner) {
-            _binding?.apply {
-                buyNowBtn.text = "Proceed to buy ${it?.size} items"
-                cartList.listCartData(it)
-                giftOpt.setOnCheckedChangeListener{ _, isChecked ->
-                    if(isChecked){
-                        cartViewModel.optGiftingOption(true)
-                    }else{
-                        cartViewModel.optGiftingOption(false)
+            when(it?.size){
+                0 -> {
+                    _binding?.apply{
+                        emptyCartLayout.visible(true)
+                        cartList.visible(false)
+                        buyNowBtn.isEnabled = false
                     }
                 }
-                buyNowBtn.setOnClickListener{
-                    buyNowBtn.visible(false)
-                    progressBar.visible(true)
-                    cartViewModel.createOrder(
-                        userId!!
-                    )
-                    val action = CheckoutFragmentDirections.actionNavCartToOrderConfirmed()
-                    findNavController().navigate(action)
+                else -> {
+                    _binding?.apply {
+                        buyNowBtn.text = "Proceed to buy ${it?.size} items"
+                        cartList.listCartData(it)
+                        giftOpt.setOnCheckedChangeListener{ _, isChecked ->
+                            if(isChecked){
+                                cartViewModel.optGiftingOption(true)
+                            }else{
+                                cartViewModel.optGiftingOption(false)
+                            }
+                        }
+                        buyNowBtn.setOnClickListener{
+                            buyNowBtn.visible(false)
+                            progressBar.visible(true)
+                            cartViewModel.createOrder(
+                                userId!!
+                            )
+                            val action = CheckoutFragmentDirections.actionNavCartToOrderConfirmed()
+                            findNavController().navigate(action)
+                        }
+                    }
                 }
             }
         }

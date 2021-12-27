@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.edit
@@ -23,9 +25,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.api.models.entity.User
 import com.example.localbuddy.data.Resource
+import com.example.localbuddy.ui.checkout.CartViewModel
 import com.google.android.material.navigation.NavigationView
+import com.razorpay.Checkout
+import com.razorpay.PaymentResultListener
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PaymentResultListener {
     companion object {
         private val SHARED_PREF = "shared_pref"
         private val PREF_TOKEN = "token"
@@ -33,16 +38,19 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var cartViewModel: CartViewModel
     private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var navController: NavController
+    val TAG:String = MainActivity::class.toString()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+        cartViewModel = ViewModelProvider(this).get(CartViewModel::class.java)
         sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
         setContentView(R.layout.activity_main)
 
@@ -63,6 +71,8 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        Checkout.preload(applicationContext)
 
         navView.setNavigationItemSelectedListener {
             it.isChecked = true
@@ -157,7 +167,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController,drawerLayout) || super.onSupportNavigateUp()
+    override fun onPaymentError(errorCode: Int, response: String?) {
+        try{
+            Toast.makeText(this,"Payment failed $errorCode \n $response", Toast.LENGTH_LONG).show()
+            cartViewModel.setStatus("error")
+        }catch (e: Exception){
+            Log.e(TAG,"Exception in onPaymentSuccess", e)
+        }
     }
+
+    override fun onPaymentSuccess(razorpayPaymentId: String?) {
+        try{
+            Toast.makeText(this,"Payment Successful $razorpayPaymentId", Toast.LENGTH_LONG).show()
+            cartViewModel.setStatus("success")
+        }catch (e: Exception){
+            Log.e(TAG,"Exception in onPaymentSuccess", e)
+        }
+    }
+
 }

@@ -12,5 +12,7 @@ data class Order(
     @Json(name = "amount")
     val amount: Int,
     @Json(name = "orderDate")
-    val orderDate: String
+    val orderDate: String,
+    @Json(name = "razorpayId")
+    val razorpayId: String
 )
