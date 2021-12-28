@@ -7,6 +7,7 @@ import com.example.api.models.request.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface LocalBuddyAuthAPI {
     @GET("/products")
@@ -25,6 +26,16 @@ interface LocalBuddyAuthAPI {
     @POST("/orders/create")
     suspend fun createOrder(
         @Body cartParams: CreateOrderRequest
+    ): Order
+
+    @GET("/orders/{id}")
+    suspend fun getOrderById(
+        @Path("id") id: String
+    ): Order
+
+    @POST("/orders/delete/{id}")
+    suspend fun deleteOrderById(
+        @Path("id") id: String
     ): Order
 
     @POST("/products/add-feedback")

@@ -67,6 +67,12 @@ class CartViewModel : ViewModel() {
         }
     }
 
+    fun clear(){
+        _cartItems.value = mutableListOf()
+        _totalAmount.value = 0
+        _orderStatus.value = OrderStatus.NONE
+    }
+
     fun removeItem(productId: String) {
         val item = _cartItems.value?.find { it.product.id == productId }
         _cartItems.value?.removeAll { it.product.id == productId }

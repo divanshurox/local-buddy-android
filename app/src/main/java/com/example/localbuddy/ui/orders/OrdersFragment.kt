@@ -7,19 +7,16 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.localbuddy.AuthViewModel
-import com.example.localbuddy.R
+import com.example.localbuddy.*
 import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentOrdersBinding
-import com.example.localbuddy.handleApiCall
-import com.example.localbuddy.listOrderData
 
 class OrdersFragment : Fragment() {
     private var _binding: FragmentOrdersBinding? = null
     val binding: FragmentOrdersBinding get() = _binding!!
-    private val orderViewModel: OrdersViewModel by viewModels()
+    private val orderViewModel: OrdersViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private lateinit var userId: String
 
@@ -32,7 +29,9 @@ class OrdersFragment : Fragment() {
         _binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             ordersList.layoutManager = LinearLayoutManager(context)
-            ordersList.adapter = OrdersListAdapter()
+            ordersList.adapter = OrdersListAdapter{
+                onClick(it)
+            }
         }
         return binding.root
     }
@@ -46,6 +45,7 @@ class OrdersFragment : Fragment() {
         }
         orderViewModel.getOrders(userId)
         orderViewModel.orders.observe(viewLifecycleOwner, {
+            binding.progressBar.visible(false)
             when(it){
                 is Resource.Success -> binding.apply{
                     ordersList.listOrderData(it.value)
@@ -56,5 +56,10 @@ class OrdersFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.apply {
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
+    }
+
+    private fun onClick(orderId: String){
+        val action = OrdersFragmentDirections.actionNavOrdersToOrderFragment(orderId)
+        findNavController().navigate(action)
     }
 }

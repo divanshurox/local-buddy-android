@@ -24,4 +24,16 @@ object OrdersRepo {
     ) = BaseRepo.safeApiCall {
         api.getOrdersList(GetOrdersRequest(userId))
     }
+
+    suspend fun getOrderById(
+        id: String
+    ) = BaseRepo.safeApiCall {
+        api.getOrderById(id)
+    }
+
+    suspend fun deleteOrderById(
+        id: String
+    ) = BaseRepo.safeApiCall {
+        api.deleteOrderById(id)
+    }
 }

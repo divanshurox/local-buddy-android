@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.api.models.entity.Order
 import com.example.localbuddy.databinding.ListItemOrderBinding
 
-class OrdersListAdapter : ListAdapter<Order, OrdersListAdapter.OrderViewHolder>(DiffCallback) {
+class OrdersListAdapter(val onClick: (orderId: String) -> Unit) : ListAdapter<Order, OrdersListAdapter.OrderViewHolder>(DiffCallback) {
     companion object DiffCallback : DiffUtil.ItemCallback<Order>() {
         override fun areItemsTheSame(oldItem: Order, newItem: Order): Boolean {
             return oldItem === newItem
@@ -27,6 +27,9 @@ class OrdersListAdapter : ListAdapter<Order, OrdersListAdapter.OrderViewHolder>(
                 orderDate.text = order.orderDate
                 orderPrice.text = "Rs. ${order.amount.toString()}"
                 deliveryStatus.text = "Delivering Today"
+                orderLayout.setOnClickListener{
+                    onClick(order._id)
+                }
             }
             binding.executePendingBindings()
         }

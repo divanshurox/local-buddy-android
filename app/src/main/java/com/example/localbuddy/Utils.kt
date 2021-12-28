@@ -17,6 +17,7 @@ import com.example.localbuddy.ui.auth.LoginFragment
 import com.example.localbuddy.ui.auth.SignupFragment
 import com.example.localbuddy.ui.checkout.CartListAdapter
 import com.example.localbuddy.ui.home.ProductsAdapter
+import com.example.localbuddy.ui.orders.OrderDetailsListAdapter
 import com.example.localbuddy.ui.orders.OrdersListAdapter
 import com.example.localbuddy.ui.product.FeedbacksListAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -117,6 +118,13 @@ fun RecyclerView.listFeedbackData(
     data: List<Feedback>?
 ){
     val adapter = this.adapter as FeedbacksListAdapter
+    adapter.submitList(data)
+}
+
+fun RecyclerView.listOrderDetailData(
+    data: List<CartItem>?
+){
+    val adapter = this.adapter as OrderDetailsListAdapter
     adapter.submitList(data)
 }
 

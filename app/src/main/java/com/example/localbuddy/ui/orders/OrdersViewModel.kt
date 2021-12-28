@@ -14,12 +14,37 @@ class OrdersViewModel: ViewModel() {
     private val _orders = MutableLiveData<Resource<List<Order>>>()
     val orders: LiveData<Resource<List<Order>>> get() = _orders
 
+    private val _order = MutableLiveData<Resource<Order>>()
+    val order: LiveData<Resource<Order>> get() = _order
+
     fun getOrders(userId: String){
         try{
             viewModelScope.launch{
                 OrdersRepo.getOrders(userId).let{
                     _orders.value = it
                 }
+            }
+        }catch (e: Exception){
+            Log.d("OrdersViewModel", "${e.message}")
+        }
+    }
+
+    fun getOrderById(id: String){
+        try{
+            viewModelScope.launch{
+                OrdersRepo.getOrderById(id).let{
+                    _order.value = it
+                }
+            }
+        }catch (e: Exception){
+            Log.d("OrdersViewModel", "${e.message}")
+        }
+    }
+
+    fun deleteOrderById(id: String){
+        try{
+            viewModelScope.launch{
+                OrdersRepo.deleteOrderById(id)
             }
         }catch (e: Exception){
             Log.d("OrdersViewModel", "${e.message}")
