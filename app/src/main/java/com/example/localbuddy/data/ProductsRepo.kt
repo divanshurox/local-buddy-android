@@ -24,10 +24,11 @@ object ProductsRepo {
         userAvatar: String,
         productId: String,
         feedback: String,
-        rating: Int
+        rating: Int,
+        feedbackImg: String?
     ) = BaseRepo.safeApiCall {
         api.addFeedback(
-            AddFeedbackRequest(feedback, rating, userId, username, userAvatar, productId)
+            AddFeedbackRequest(feedback, rating, userId, username, userAvatar, productId, feedbackImg)
         )
     }
 

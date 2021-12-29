@@ -1,13 +1,17 @@
 package com.example.localbuddy.ui.product
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,8 +23,16 @@ import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentProductBinding
 import com.example.localbuddy.navObject.Product
 import com.example.localbuddy.ui.checkout.CartViewModel
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import java.io.File
+import java.io.FileInputStream
+import kotlin.properties.Delegates
 
 class ProductFragment : Fragment() {
     private var _binding: FragmentProductBinding? = null
@@ -33,15 +45,54 @@ class ProductFragment : Fragment() {
     private lateinit var username: String
     private lateinit var userAvatar: String
 
+    private lateinit var customLayout: View
+    private lateinit var addImg: MaterialButton
+    private lateinit var feedbackText: TextInputEditText
+    private var selectedRadio by Delegates.notNull<Int>()
+    private var rating by Delegates.notNull<Int>()
+    private lateinit var feedbackImage: ImageView
+    private lateinit var storage: FirebaseStorage
+    private lateinit var filename: String
+    private lateinit var path: String
+
+    private val startImagePicker =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val resultCode = result.resultCode
+            val data = result.data
+
+            if (resultCode == Activity.RESULT_OK) {
+                val uri = data?.data!!
+                Log.d("ProductFrag", uri.path.toString())
+                feedbackImage.apply {
+                    visible(true)
+                    setImageURI(uri)
+                }
+                path = uri.path!!
+                filename = path.split("/").last()
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProductBinding.inflate(inflater, container, false)
+        customLayout = layoutInflater.inflate(R.layout.feedback_dialog, null)
+        addImg =
+            customLayout.findViewById<MaterialButton>(R.id.addImage)
+        feedbackText =
+            customLayout.findViewById<TextInputEditText>(R.id.feedbackEditText)
+        selectedRadio =
+            customLayout.findViewById<RadioGroup>(R.id.radioGroup).checkedRadioButtonId
+        rating =
+            customLayout.findViewById<RadioButton>(selectedRadio).text.toString()
+                .toInt()
+        feedbackImage = customLayout.findViewById<ImageView>(R.id.feedback_image)
         arguments?.let {
             productId = it.getString("productId").toString()
         }
+        storage = Firebase.storage
         productId?.let {
             viewModel.fetchProductById(it)
             viewModel.fetchFeedbackById(it)
@@ -63,23 +114,6 @@ class ProductFragment : Fragment() {
         return binding.root
     }
 
-    private fun deleteFeedback(feedbackId: String) {
-        viewModel.deleteFeedback(feedbackId)
-        Toast.makeText(context, "Feedback deleted successfully!", Toast.LENGTH_LONG).show()
-    }
-
-    private fun addFeedback(
-        userId: String,
-        username: String,
-        userAvatar: String,
-        feedback: String,
-        rating: Int,
-        productId: String
-    ) {
-        viewModel.addFeedback(userId, username, userAvatar, feedback, rating, productId)
-        Toast.makeText(context, "Feedback added.", Toast.LENGTH_LONG).show()
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,26 +131,29 @@ class ProductFragment : Fragment() {
                             Toast.makeText(context, "Item added to cart.", Toast.LENGTH_LONG).show()
                         }
                         addFeedback.setOnClickListener {
-                            val customLayout =
-                                layoutInflater.inflate(R.layout.feedback_dialog, null)
+
+                            addImg.setOnClickListener {
+                                ImagePicker.with(requireActivity())
+                                    .createIntent { intent ->
+                                        startImagePicker.launch(intent)
+                                    }
+                            }
                             MaterialAlertDialogBuilder(requireContext())
                                 .setView(customLayout)
                                 .setTitle("Add Feedback")
                                 .setPositiveButton("Submit") { _, _ ->
-                                    val feedbackText =
-                                        customLayout.findViewById<TextInputEditText>(R.id.feedbackEditText)
-                                    val selectedRadio =
-                                        customLayout.findViewById<RadioGroup>(R.id.radioGroup).checkedRadioButtonId
-                                    val rating =
-                                        customLayout.findViewById<RadioButton>(selectedRadio).text.toString()
-                                            .toInt()
+                                    var downloadLink: String? = null
+                                    if (filename.isNotEmpty() && path.isNotEmpty()) {
+                                        downloadLink = uploadImage(filename, path)
+                                    }
                                     addFeedback(
                                         userId,
                                         username,
                                         userAvatar,
                                         feedbackText.text.toString(),
                                         rating,
-                                        productId!!
+                                        productId!!,
+                                        downloadLink
                                     )
                                     findNavController().navigateUp()
                                 }
@@ -158,6 +195,49 @@ class ProductFragment : Fragment() {
                 is Resource.Faliure -> handleApiCall(it)
             }
         }
+    }
+
+    private fun uploadImage(filename: String, path: String): String? {
+        val storageRef = storage.reference
+        val imageRef = storageRef.child(filename)
+        val stream = FileInputStream(File(path))
+        val uploadTask = imageRef.putStream(stream)
+        var link: String? = null
+        uploadTask.addOnFailureListener {
+            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+        }.addOnSuccessListener {
+            imageRef.downloadUrl.addOnSuccessListener {
+                link = it.toString()
+            }
+            Toast.makeText(context, "Uploaded image successfully", Toast.LENGTH_LONG).show()
+        }
+        return link
+    }
+
+    private fun deleteFeedback(feedbackId: String) {
+        viewModel.deleteFeedback(feedbackId)
+        Toast.makeText(context, "Feedback deleted successfully!", Toast.LENGTH_LONG).show()
+    }
+
+    private fun addFeedback(
+        userId: String,
+        username: String,
+        userAvatar: String,
+        feedback: String,
+        rating: Int,
+        productId: String,
+        feedbackImg: String?
+    ) {
+        viewModel.addFeedback(
+            userId,
+            username,
+            userAvatar,
+            feedback,
+            rating,
+            productId,
+            feedbackImg
+        )
+        Toast.makeText(context, "Feedback added.", Toast.LENGTH_LONG).show()
     }
 
 

@@ -48,11 +48,12 @@ class ProductViewModel : ViewModel() {
         userAvatar: String,
         feedback: String,
         rating: Int,
-        productId: String
+        productId: String,
+        feedbackImg: String?
     ) {
         viewModelScope.launch {
             try {
-                ProductsRepo.addFeedback(userId, username, userAvatar, productId, feedback, rating)
+                ProductsRepo.addFeedback(userId, username, userAvatar, productId, feedback, rating,feedbackImg)
             } catch (e: Exception) {
                 Log.d("OrdersViewModel", "${e.message}")
             }

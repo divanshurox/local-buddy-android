@@ -9,9 +9,11 @@ import com.example.api.models.entity.Feedback
 import com.example.localbuddy.avatarUrl
 import com.example.localbuddy.convertToDate
 import com.example.localbuddy.databinding.ListItemFeedbackBinding
+import com.example.localbuddy.imgUrl
 import com.example.localbuddy.visible
 
-class FeedbacksListAdapter(val userId: String,val deleteFeedback: (feedbackId: String) -> Unit) : ListAdapter<Feedback, FeedbacksListAdapter.ViewHolder>(DiffCallback) {
+class FeedbacksListAdapter(val userId: String, val deleteFeedback: (feedbackId: String) -> Unit) :
+    ListAdapter<Feedback, FeedbacksListAdapter.ViewHolder>(DiffCallback) {
     inner class ViewHolder(private val binding: ListItemFeedbackBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(feedback: Feedback) {
@@ -21,13 +23,19 @@ class FeedbacksListAdapter(val userId: String,val deleteFeedback: (feedbackId: S
                 userName.text = feedback.username
                 datePosted.convertToDate(feedback.createdAt)
                 userRating.text = "${feedback.rating.toString()}/5"
-                deleteFeedback.apply{
-                    visible(userId==feedback.userId)
-                    setOnClickListener{
+                deleteFeedback.apply {
+                    visible(userId == feedback.userId)
+                    setOnClickListener {
                         cardContent.visible(false)
                         progressBar.visible(true)
                         deleteFeedback(feedback.id)
                     }
+                }
+            }
+            if (!feedback.feedbackImg.isNullOrEmpty()) {
+                binding.feedbackImage.apply {
+                    visible(true)
+                    imgUrl(feedback.feedbackImg)
                 }
             }
         }
@@ -48,7 +56,7 @@ class FeedbacksListAdapter(val userId: String,val deleteFeedback: (feedbackId: S
         holder.bind(item)
     }
 
-    companion object DiffCallback: DiffUtil.ItemCallback<Feedback>(){
+    companion object DiffCallback : DiffUtil.ItemCallback<Feedback>() {
         override fun areItemsTheSame(oldItem: Feedback, newItem: Feedback): Boolean {
             return oldItem === newItem
         }

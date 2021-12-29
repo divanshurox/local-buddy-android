@@ -24,4 +24,6 @@ data class Feedback(
     val updatedAt: String,
     @Json(name = "createdAt")
     val createdAt: String,
+    @Json(name = "feedbackImg")
+    val feedbackImg: String?
 )

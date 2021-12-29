@@ -11,9 +11,9 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:hint="Feedback"
-        app:boxBackgroundColor="@color/white"
-        android:layout_marginBottom="10dp">
+        app:boxBackgroundColor="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/feedbackEditText"
@@ -66,11 +66,20 @@
             android:text="5" />
     </RadioGroup>
 
-    <!--    <Button-->
-    <!--        android:id="@+id/add_feedback"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Submit"/>-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addImage"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:text="add image"/>
 
+    <ImageView
+        android:id="@+id/feedback_image"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="center"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"/>
 
 </LinearLayout>

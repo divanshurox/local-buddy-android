@@ -18,4 +18,6 @@ data class AddFeedbackRequest(
     val userAvatar: String,
     @Json(name = "productId")
     val productId: String,
+    @Json(name = "feedbackImg")
+    val feedbackImg: String?
 )
