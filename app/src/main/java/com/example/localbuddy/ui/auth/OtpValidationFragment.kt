@@ -3,16 +3,19 @@ package com.example.localbuddy.ui.auth
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.api.LocalBuddyClient
+import com.example.localbuddy.*
 import com.example.localbuddy.R
+import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentValidateotpBinding
-import com.example.localbuddy.displayError
-import com.example.localbuddy.visible
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -27,6 +30,7 @@ class OtpValidationFragment : Fragment() {
     private lateinit var number: String
     private lateinit var auth: FirebaseAuth
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,12 +93,34 @@ class OtpValidationFragment : Fragment() {
                 it.visible(false)
                 val credential = PhoneAuthProvider.getCredential(backendOtp,userOtp)
                 FirebaseAuth.getInstance().signInWithCredential(credential)
-                    .addOnCompleteListener(activity!!) {task ->
+                    .addOnCompleteListener(requireActivity()) {task ->
                         if(task.isSuccessful){
-                            val navController = findNavController()
-                            val inflater = navController.navInflater
-                            navController.popBackStack()
-                            navController.graph = inflater.inflate(R.navigation.nav_graph_auth)
+                            authViewModel.userDetails.value?.let{
+                                authViewModel.registerSeller(
+                                    it.firstname,
+                                    it.lastname,
+                                    it.email,
+                                    it.password,
+                                    it.phone,
+                                    it.address.addressLine,
+                                    it.address.city,
+                                    it.address.state,
+                                    it.address.pincode,
+                                    it.username,
+                                    it.isSeller,
+                                    it.gstno,
+                                    it.shopName
+                                )
+                            }
+                            authViewModel.user.observe(viewLifecycleOwner, {
+                                Log.d("signup","inside onviewcreated")
+                                when(it){
+                                    is Resource.Success -> {
+                                        LocalBuddyClient.authToken = it.value.token
+                                    }
+                                    is Resource.Faliure -> handleApiCall(it)
+                                }
+                            })
                         }else{
                             displayError("Wrong OTP! Please try again.")
                         }
@@ -211,7 +237,7 @@ class OtpValidationFragment : Fragment() {
             val options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber("+91" + number)
                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(activity!!)
+                .setActivity(requireActivity())
                 .setCallbacks(callbacks)
                 .build()
             PhoneAuthProvider.verifyPhoneNumber(options)

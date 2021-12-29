@@ -19,6 +19,46 @@ class AuthViewModel : ViewModel() {
     private var _user = MutableLiveData<Resource<User>?>()
     val user: LiveData<Resource<User>?> get() = _user
 
+    private var _userDetails = MutableLiveData<User>()
+    val userDetails: LiveData<User> get() = _userDetails
+
+    fun saveUserDetails(
+        firstname: String,
+        lastname: String,
+        email: String,
+        password: String,
+        phone: String,
+        address: String,
+        city: String,
+        state: String,
+        pincode: String,
+        username: String,
+        isSeller: Boolean,
+        gstno: String,
+        shopname: String
+    ){
+        _userDetails.value = User(
+            Address(
+                address,
+                city,
+                pincode,
+                state
+            ),
+            email,
+            firstname,
+            gstno,
+            "",
+            isSeller,
+            lastname,
+            password,
+            phone,
+            "",
+            shopname,
+            "",
+            username
+        )
+    }
+
     fun login(username: String, password: String) {
         viewModelScope.launch {
             try {

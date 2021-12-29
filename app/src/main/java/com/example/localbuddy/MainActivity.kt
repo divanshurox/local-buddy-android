@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
         cartViewModel = ViewModelProvider(this).get(CartViewModel::class.java)
-        sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
         setContentView(R.layout.activity_main)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -98,6 +97,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
 
 
         authViewModel.user.observe({ lifecycle }, {
+            Log.d("signup","inside main activity")
             val inflater = navController.navInflater
             if (it is Resource.Success) {
                 updateMenu(it.value)

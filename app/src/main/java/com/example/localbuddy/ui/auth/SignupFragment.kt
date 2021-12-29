@@ -8,12 +8,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.api.LocalBuddyClient
 import com.example.localbuddy.AuthViewModel
 import com.example.localbuddy.R
-import com.example.localbuddy.data.Resource
 import com.example.localbuddy.databinding.FragmentSignupBinding
-import com.example.localbuddy.handleApiCall
 import com.example.localbuddy.visible
 
 class SignupFragment: Fragment() {
@@ -32,59 +29,44 @@ class SignupFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        authViewModel.user.observe(viewLifecycleOwner, {
-            when(it){
-                is Resource.Success -> {
-                    LocalBuddyClient.authToken = it.value.token
-                }
-                is Resource.Faliure -> handleApiCall(it)
-            }
-        })
+//        authViewModel.user.observe(viewLifecycleOwner, {
+//            Log.d("signup","inside onviewcreated")
+//            when(it){
+//                is Resource.Success -> {
+//                    LocalBuddyClient.authToken = it.value.token
+//                }
+//                is Resource.Faliure -> handleApiCall(it)
+//            }
+//        })
         _binding?.apply{
             sellerSwitch.setOnCheckedChangeListener { _, isChecked ->
                 gstShopnameLayout.visible(isChecked)
             }
             signupButton.setOnClickListener {
-                when(sellerSwitch.isChecked){
-                    true -> {
-                        authViewModel.registerSeller(
-                            firstname.text.toString(),
-                            lastname.text.toString(),
-                            email.text.toString(),
-                            password.text.toString(),
-                            phone.text.toString(),
-                            address.text.toString(),
-                            city.text.toString(),
-                            state.text.toString(),
-                            pincode.text.toString(),
-                            username.text.toString(),
-                            true,
-                            gstno.text.toString(),
-                            shopname.text.toString()
-                        )
-                    }
-                    else -> {
-                        authViewModel.registerUser(
-                            firstname.text.toString(),
-                            lastname.text.toString(),
-                            email.text.toString(),
-                            password.text.toString(),
-                            phone.text.toString(),
-                            address.text.toString(),
-                            city.text.toString(),
-                            state.text.toString(),
-                            pincode.text.toString(),
-                            username.text.toString(),
-                            false
-                        )
-                    }
-                }
-                authViewModel.user.observe(viewLifecycleOwner,{
-                    if(it is Resource.Success){
-                        val bundle = bundleOf("number" to phone.text.toString())
-                        findNavController().navigate(R.id.action_nav_signup_to_mobileAuthFragment,bundle)
-                    }
-                })
+                authViewModel.saveUserDetails(
+                    firstname.text.toString(),
+                    lastname.text.toString(),
+                    email.text.toString(),
+                    password.text.toString(),
+                    phone.text.toString(),
+                    address.text.toString(),
+                    city.text.toString(),
+                    state.text.toString(),
+                    pincode.text.toString(),
+                    username.text.toString(),
+                    sellerSwitch.isChecked,
+                    gstno.text.toString(),
+                    shopname.text.toString()
+                )
+                val bundle = bundleOf("number" to phone.text.toString())
+                findNavController().navigate(R.id.action_nav_signup_to_mobileAuthFragment,bundle)
+//                authViewModel.user.observe(viewLifecycleOwner,{
+//                    Log.d("signup","inside onviewcreated - 2")
+//                    if(it is Resource.Success){
+//                        val bundle = bundleOf("number" to phone.text.toString())
+//                        findNavController().navigate(R.id.action_nav_signup_to_mobileAuthFragment,bundle)
+//                    }
+//                })
             }
         }
     }

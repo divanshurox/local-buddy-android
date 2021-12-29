@@ -9,9 +9,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 android {

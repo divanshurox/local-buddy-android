@@ -34,7 +34,7 @@ class OrderConfirmed : Fragment() {
             title = "Order Placed"
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
-        binding?.apply {
+        binding.apply {
             homeButton.setOnClickListener {
                 val action = OrderConfirmedDirections.actionOrderConfirmedToNavHome()
                 findNavController().navigate(action)

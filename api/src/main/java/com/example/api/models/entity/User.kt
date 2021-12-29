@@ -31,7 +31,5 @@ data class User(
     @Json(name = "token")
     val token: String,
     @Json(name = "username")
-    val username: String,
-    @Json(name = "__v")
-    val v: Int
+    val username: String
 )
