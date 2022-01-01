@@ -97,7 +97,6 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
 
 
         authViewModel.user.observe({ lifecycle }, {
-            Log.d("signup","inside main activity")
             val inflater = navController.navInflater
             if (it is Resource.Success) {
                 updateMenu(it.value)
@@ -107,14 +106,21 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
                     }
                 }
                 navController.popBackStack()
-                navController.graph = inflater.inflate(R.navigation.nav_graph_auth)
+                if(it.value.isSeller){
+                    Log.d("mainactivity","true")
+                    navController.graph = inflater.inflate(R.navigation.nav_graph_auth_seller)
+                }else{
+                    navController.graph = inflater.inflate(R.navigation.nav_graph_auth)
+                }
                 val navHeader: View = navView.getHeaderView(0)
                 val navHeaderName: TextView = navHeader.findViewById(R.id.nav_header_name)
                 val navHeaderUsername: TextView = navHeader.findViewById(R.id.nav_header_username)
                 val navHeaderImageView: ImageView = navHeader.findViewById(R.id.nav_header_image)
+                val navHeaderIsSeller: TextView = navHeader.findViewById(R.id.isSeller)
                 navHeaderName.text = it.value.firstname + " " + it.value.lastname
                 navHeaderUsername.text = it.value.username
                 navHeaderImageView.avatarUrl(it.value.avatar)
+                navHeaderIsSeller.visible(it.value.isSeller)
             } else if (it == null) {
                 updateMenu(it)
                 navController.popBackStack()
@@ -123,29 +129,14 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         })
     }
 
-//    private fun selectDrawerItem(item: MenuItem) {
-//        when (item.itemId) {
-//            R.id.nav_login -> replaceFragment(LoginFragment(), item.title.toString())
-//            R.id.nav_signup -> replaceFragment(SignupFragment(), item.title.toString())
-//        }
-//    }
-//
-//    private fun replaceFragment(fragment: Fragment, title: String) {
-//        supportFragmentManager.commit{
-//            add(R.id.frame_layout, fragment, title).setTransition(
-//                FragmentTransaction.TRANSIT_FRAGMENT_OPEN
-//            )
-//            setReorderingAllowed(true)
-//            addToBackStack(title)
-//        }
-//        supportActionBar?.title = title
-//        drawerLayout.closeDrawers()
-//    }
-
     private fun updateMenu(user: User?) {
         navView.menu.clear()
         if (user != null) {
-            navView.inflateMenu(R.menu.activity_main_drawer_auth)
+            if(user.isSeller){
+                navView.inflateMenu(R.menu.activity_main_drawer_auth_seller)
+            }else{
+                navView.inflateMenu(R.menu.activity_main_drawer_auth)
+            }
         } else {
             navView.inflateMenu(R.menu.activity_main_drawer)
         }
@@ -184,5 +175,24 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
             Log.e(TAG,"Exception in onPaymentSuccess", e)
         }
     }
+
+    //    private fun selectDrawerItem(item: MenuItem) {
+//        when (item.itemId) {
+//            R.id.nav_login -> replaceFragment(LoginFragment(), item.title.toString())
+//            R.id.nav_signup -> replaceFragment(SignupFragment(), item.title.toString())
+//        }
+//    }
+//
+//    private fun replaceFragment(fragment: Fragment, title: String) {
+//        supportFragmentManager.commit{
+//            add(R.id.frame_layout, fragment, title).setTransition(
+//                FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+//            )
+//            setReorderingAllowed(true)
+//            addToBackStack(title)
+//        }
+//        supportActionBar?.title = title
+//        drawerLayout.closeDrawers()
+//    }
 
 }

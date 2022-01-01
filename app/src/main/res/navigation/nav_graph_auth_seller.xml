@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_auth_seller"
+    app:startDestination="@id/nav_home_seller">
+    <fragment
+        android:id="@+id/nav_add_item"
+        android:name="com.example.localbuddy.ui.product.AddProductFragment"
+        android:label="AddProductFragment" >
+        <action
+            android:id="@+id/action_nav_add_item_to_nav_home_seller"
+            app:destination="@id/nav_home_seller" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_home_seller"
+        android:name="com.example.localbuddy.ui.home.SellerHomeFragment"
+        android:label="SellerHomeFragment" >
+        <action
+            android:id="@+id/action_nav_home_seller_to_productFragmentSeller"
+            app:destination="@id/nav_product" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProductFragment"
+        android:name="com.example.localbuddy.ui.product.EditProductFragment"
+        android:label="EditProductFragment" >
+        <argument
+            android:name="product"
+            app:argType="com.example.localbuddy.navObject.Product" />
+        <action
+            android:id="@+id/action_editProductFragment_to_nav_home_seller"
+            app:destination="@id/nav_home_seller" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_product"
+        android:name="com.example.localbuddy.ui.product.ProductFragmentSeller"
+        android:label="ProductFragmentSeller" >
+        <action
+            android:id="@+id/action_productFragmentSeller_to_editProductFragment"
+            app:destination="@id/editProductFragment" />
+    </fragment>
+</navigation>

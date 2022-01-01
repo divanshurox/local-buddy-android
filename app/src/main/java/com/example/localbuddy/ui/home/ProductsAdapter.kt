@@ -9,8 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.api.models.entity.Product
 import com.example.localbuddy.databinding.ListItemProductBinding
 import com.example.localbuddy.imgUrl
+import com.example.localbuddy.visible
 
-class ProductsAdapter(val onProductClicked: (productId: String) -> Unit) :
+class ProductsAdapter(
+    val isSeller: Boolean,
+    val onDeleteProduct: (productId: String) -> Unit?,
+    val onProductClicked: (productId: String) -> Unit
+) :
     ListAdapter<Product, ProductsAdapter.ProductViewHolder>(DiffCallback) {
     inner class ProductViewHolder(private var binding: ListItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -22,6 +27,12 @@ class ProductsAdapter(val onProductClicked: (productId: String) -> Unit) :
             binding.productPrice.text = "Rs. ${product.price}"
             binding.root.setOnClickListener {
                 onProductClicked(product.id)
+            }
+            binding.fab.apply {
+                visible(isSeller)
+                setOnClickListener {
+                    onDeleteProduct(product.id)
+                }
             }
             binding.executePendingBindings()
         }

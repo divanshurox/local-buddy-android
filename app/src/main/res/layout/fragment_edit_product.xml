@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:cropToPadding="false"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/nike" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@id/product_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:helperText="Product Name"
+                    app:helperTextTextColor="@color/purple_700"
+                    app:startIconDrawable="@drawable/ic_abc"
+                    app:startIconContentDescription="user icon"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/name_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@id/product_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:helperText="Product Price"
+                    app:helperTextTextColor="@color/purple_700"
+                    app:startIconDrawable="@drawable/ic_123"
+                    app:startIconContentDescription="user icon"
+                    app:prefixText="$"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/product_title">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/price_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/product_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:helperText="Product Description"
+                    app:helperTextTextColor="@color/purple_700"
+                    app:startIconDrawable="@drawable/ic_abc"
+                    app:startIconContentDescription="user icon"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/product_price">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/desc_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/updateProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/product_desc"
+                    android:layout_marginTop="20dp"
+                    android:text="Update"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</layout>

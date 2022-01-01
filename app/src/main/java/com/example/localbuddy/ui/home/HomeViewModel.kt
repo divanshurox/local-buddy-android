@@ -17,14 +17,23 @@ class HomeViewModel : ViewModel() {
     private val _products = MutableLiveData<Resource<List<Product>>>()
     val products: LiveData<Resource<List<Product>>> get() = _products
 
-    init {
-        fetchProducts()
-    }
 
-    private fun fetchProducts() {
+    fun fetchProducts() {
         viewModelScope.launch {
             try {
                 ProductsRepo.getProductsList().let {
+                    _products.value = it
+                }
+            } catch (e: Exception) {
+                Log.d(classTag, "${e.message}")
+            }
+        }
+    }
+
+    fun fetchProductsBySellerId(sellerId: String) {
+        viewModelScope.launch {
+            try {
+                ProductsRepo.getProductsListBySellerId(sellerId).let {
                     _products.value = it
                 }
             } catch (e: Exception) {

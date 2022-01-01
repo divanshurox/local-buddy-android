@@ -22,24 +22,30 @@
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/cart_item_quantity_layout.xml" value="0.2" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/content_main.xml" value="0.1" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/feedback_dialog.xml" value="0.1793478260869565" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragement_productseller.xml" value="0.2" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_add_product.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_authmobile.xml" value="0.16032608695652173" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_buynow.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_checkout.xml" value="0.13333333333333333" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_edit_product.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_login.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_order.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_orders.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_product.xml" value="0.1" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_productseller.xml" value="0.1" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_seller_home.xml" value="0.1" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_signup.xml" value="0.1" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/fragment_validateotp.xml" value="0.16032608695652173" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/list_item_cart.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/list_item_feedback.xml" value="0.22" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/list_item_order.xml" value="0.1" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/list_item_order_detail.xml" value="0.22" />
-        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/list_item_product.xml" value="0.1" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/layout/list_item_product.xml" value="0.16666666666666666" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/nav_header_main.xml" value="0.1" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/order_confirm.xml" value="0.1" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/layout/splash_screen.xml" value="0.22" />
+        <entry key="..\:/Android/localbuddy/app/src/main/res/menu/activity_main_drawer_auth_seller.xml" value="0.2" />
         <entry key="..\:/Android/localbuddy/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>

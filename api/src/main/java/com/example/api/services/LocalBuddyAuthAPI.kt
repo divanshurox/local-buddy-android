@@ -4,14 +4,26 @@ import com.example.api.models.entity.Feedback
 import com.example.api.models.entity.Order
 import com.example.api.models.entity.Product
 import com.example.api.models.request.*
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface LocalBuddyAuthAPI {
     @GET("/products")
     suspend fun getProductsList(): List<Product>
+
+    @GET("/products")
+    suspend fun getProductsListBySellerId(
+        @Query("sellerId") sellerId: String
+    ): List<Product>
+
+    @POST("/products/update")
+    suspend fun updateProduct(
+        @Body productParams: UpdateProductRequest
+    )
+    
+    @POST("/products/delete/{id}")
+    suspend fun deleteProduct(
+        @Path("id") id: String
+    )
 
     @POST("/orders")
     suspend fun getOrdersList(
@@ -52,5 +64,10 @@ interface LocalBuddyAuthAPI {
     suspend fun getFeedbacksById(
         @Body feedbackParams: GetFeedbacksRequest
     ): List<Feedback>
+
+    @POST("/products/")
+    suspend fun addProduct(
+        @Body productParams: AddProductRequest
+    ): Product
 
 }

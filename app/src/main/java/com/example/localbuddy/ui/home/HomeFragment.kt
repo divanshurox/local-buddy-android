@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.localbuddy.*
@@ -20,7 +19,7 @@ class HomeFragment : Fragment() {
     val binding: FragmentHomeBinding get() = _binding!!
 
     private lateinit var productsAdapter: ProductsAdapter
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private val cartViewModel: CartViewModel by activityViewModels()
 
@@ -30,10 +29,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        productsAdapter = ProductsAdapter {
+        homeViewModel.fetchProducts()
+        productsAdapter = ProductsAdapter(false, {
+            null
+        }, {
             onClickProduct(it)
-        }
+        })
         _binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             productsList.layoutManager = LinearLayoutManager(context)
@@ -42,24 +43,24 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun onClickProduct(productId: String){
+    private fun onClickProduct(productId: String) {
         val bundle = bundleOf("productId" to productId)
-        findNavController().navigate(R.id.action_homeFragment_to_productFragment,bundle)
+        findNavController().navigate(R.id.action_homeFragment_to_productFragment, bundle)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         homeViewModel.products.observe(viewLifecycleOwner, {
-            when(it){
-                is Resource.Success -> binding.apply{
+            when (it) {
+                is Resource.Success -> binding.apply {
                     productsList.listData(it.value)
                     fab.setOnClickListener {
-                        val action = HomeFragmentDirections.actionNavHomeToNavCart()
-                        findNavController().navigate(action)
+                        findNavController().navigate(R.id.action_nav_home_to_nav_cart)
                     }
-                    authViewModel.user.value?.let{
-                        when(it){
-                            is Resource.Success -> introMessage.text = "Hey, ${it.value.firstname} ${it.value.lastname}"
+                    authViewModel.user.value?.let {
+                        when (it) {
+                            is Resource.Success -> introMessage.text =
+                                "Hey, ${it.value.firstname} ${it.value.lastname}"
                         }
                     }
 
@@ -67,11 +68,11 @@ class HomeFragment : Fragment() {
                 is Resource.Faliure -> handleApiCall(it)
             }
         })
-        cartViewModel.cartItems.observe(viewLifecycleOwner){
-            _binding?.apply{
-                if(it!!.size>0){
+        cartViewModel.cartItems.observe(viewLifecycleOwner) {
+            _binding?.apply {
+                if (it!!.size > 0) {
                     fab.visible(true)
-                }else{
+                } else {
                     fab.visible(false)
                 }
             }

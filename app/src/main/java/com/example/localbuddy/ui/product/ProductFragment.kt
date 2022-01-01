@@ -13,6 +13,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -125,7 +126,7 @@ class ProductFragment : Fragment() {
                         productImage.imgUrl(it.value.photos[0].url)
                         productTitle.text = it.value.name
                         productDesc.text = it.value.description
-                        productPrice.text = "MRP: ${it.value.price.toString()}"
+                        productPrice.text = "MRP: ${it.value.price}"
                         addToCart.setOnClickListener { _ ->
                             cartViewModel.addItem(it.value)
                             Toast.makeText(context, "Item added to cart.", Toast.LENGTH_LONG).show()
@@ -169,9 +170,8 @@ class ProductFragment : Fragment() {
                                 it.value.description,
                                 it.value.photos[0].url
                             )
-                            val action =
-                                ProductFragmentDirections.actionNavProductToBuyNowFragment(product)
-                            findNavController().navigate(action)
+                            val bundle = bundleOf("product" to product)
+                            findNavController().navigate(R.id.action_nav_product_to_buyNowFragment,bundle)
                         }
                     }
                     (activity as AppCompatActivity).supportActionBar?.apply {
